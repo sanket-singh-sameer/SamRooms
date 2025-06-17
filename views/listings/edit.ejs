@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <br> <br>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h3>Edit your old listing: </h3>
+            <br>
+            <form method="post" action="/listings/<%= listing.id %>?_method=PUT">
+                <div class="mb-3">
+                    <label for="title" form="label">Title</label>
+                    <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control">
+                    <br>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="description" form="label">Description</label>
+                    <textarea type="text" name="listing[description]" id="description"
+                        class="form-control"><%= listing.description %></textarea> <br>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" form="label">Image Link / URL</label>
+                    <input type="text" name="listing[image]" value="<%= listing.image %>" class="form-control"> <br>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-sm-4">
+                        <label for="price" form="label">Price</label>
+                        <input type="number" step="100" min="500" max="20000" name="listing[price]"
+                            value="<%= listing.price %>" class="form-control"> <br>
+                    </div>
+
+                    <div class="mb-3 col-sm-8">
+                        <label for="country" form="label">Country</label>
+                        <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control">
+                        <br>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" form="label">Location</label>
+                    <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control">
+                    <br>
+                </div>
+
+
+
+                <button class="btn btn-danger"> Make Changes !</button> <br> <br>
+            </form>
+        </div>
+
+    </div>

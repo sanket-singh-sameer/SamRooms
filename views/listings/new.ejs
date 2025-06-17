@@ -1,0 +1,55 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <br> <br>
+
+    <div class="row">
+        <div class="col-10 offset-1">
+            <h3>Add a new listing: </h3>
+            <br>
+            <form method="post" action="/listings">
+                <div class="mb-3">
+                    <label for="title" form="label">Title</label>
+                    <input type="text" name="listing[title]" placeholder="Name of the residency" class="form-control">
+                    <br>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="description" form="label">Description</label>
+                    <textarea type="text" name="listing[description]" id="description" placeholder="Enter Description"
+                        class="form-control"></textarea> <br>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" form="label">Image Link / URL</label>
+                    <input type="text" name="listing[image]" placeholder="Link of Image" class="form-control"> <br>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-sm-4">
+                        <label for="price" form="label">Price</label>
+                        <input type="number" step="100" min="500" max="20000" name="listing[price]" placeholder="Price"
+                            class="form-control"> <br>
+                    </div>
+
+                    <div class="mb-3 col-sm-8">
+                        <label for="country" form="label">Country</label>
+                        <input type="text" name="listing[country]" placeholder="Country of Residence"
+                            class="form-control">
+                        <br>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" form="label">Location</label>
+                    <input type="text" name="listing[location]" placeholder="Enter the Location" class="form-control">
+                    <br>
+                </div>
+
+
+
+                <button class="btn btn-danger"> Create Now !</button> <br> <br>
+            </form>
+        </div>
+
+    </div>
