@@ -6,10 +6,17 @@
         <div class="col-10 offset-1">
             <h3>Add a new listing: </h3>
             <br>
-            <form method="post" action="/listings">
+            <form method="post" action="/listings" novalidate class="needs-validation">
                 <div class="mb-3">
                     <label for="title" form="label">Title</label>
-                    <input type="text" name="listing[title]" placeholder="Name of the residency" class="form-control">
+                    <input type="text" name="listing[title]" placeholder="Name of the residency" class="form-control"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a title.
+                    </div>
                     <br>
                 </div>
 
@@ -17,32 +24,64 @@
                 <div class="mb-3">
                     <label for="description" form="label">Description</label>
                     <textarea type="text" name="listing[description]" id="description" placeholder="Enter Description"
-                        class="form-control"></textarea> <br>
+                        class="form-control" required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a short description.
+                    </div> <br>
                 </div>
 
                 <div class="mb-3">
                     <label for="image" form="label">Image Link / URL</label>
-                    <input type="text" name="listing[image]" placeholder="Link of Image" class="form-control"> <br>
+                    <input type="text" name="listing[image]" placeholder="Link of Image" class="form-control"
+                        value="https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid image URL.
+                    </div> <br>
                 </div>
 
                 <div class="row">
                     <div class="mb-3 col-sm-4">
                         <label for="price" form="label">Price</label>
-                        <input type="number" step="100" min="500" max="20000" name="listing[price]" placeholder="Price"
-                            class="form-control"> <br>
+                        <input type="number" step="100" min="0" max="1000000" name="listing[price]" placeholder="Price"
+                            class="form-control" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a valid Price. (Set it to 0 to make the property free.)
+                        </div><br>
                     </div>
 
                     <div class="mb-3 col-sm-8">
                         <label for="country" form="label">Country</label>
                         <input type="text" name="listing[country]" placeholder="Country of Residence"
-                            class="form-control">
+                            class="form-control" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a valid Country.
+                        </div>
                         <br>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" form="label">Location</label>
-                    <input type="text" name="listing[location]" placeholder="Enter the Location" class="form-control">
+                    <input type="text" name="listing[location]" placeholder="Enter the Location" class="form-control"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a location.
+                    </div>
                     <br>
                 </div>
 
