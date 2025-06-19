@@ -1,0 +1,19 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+    <br>
+    <div class="row">
+        <div class="alert alert-danger col-6 offset-3" role="alert">
+            <h4 class="alert-heading" style="text-align: center;">Ahh! Sorry For The Inconvinience.</h4>
+            <p>This might be due to a temporary glitch or network issue. Please try refreshing the page. Please read the
+                cause of the error below. If the problem continues, feel free to contact our support team for help. <br>
+
+            </p>
+            <hr>
+            <p class="mb-0" style="text-align: center;"> Status Code: <%= statusCode %> || Error: <%= message %>
+            </p>
+        </div>
+        <div style="display: flex; justify-content: space-around;" class="col-4 offset-4">
+            <a href="/" class="btn btn-danger">Homepage</a>
+            <a href="/contact" class="btn btn-danger">Contact us</a>
+        </div>
+    </div>
