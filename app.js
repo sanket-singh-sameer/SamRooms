@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listings.js");
+const Review = require("./models/reviews.js");
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
 const path = require("path");
@@ -9,7 +10,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const listingSchema = require("./validations/listing.validation.js");
+const listingSchemaValidation = require("./validations/listing.validation.js");
+const reviewSchemaValidation = require("./validations/review.validation.js");
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
@@ -54,7 +56,8 @@ app.get(
   "/listings/:id",
   wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
-    res.render("./listings/show.ejs", { listing });
+    const reviewsList = await Listing.findById(req.params.id).populate("reviews");
+    res.render("./listings/show.ejs", { listing , reviewsList});
   })
 );
 
@@ -110,6 +113,33 @@ app.delete(
     console.log("Deleted Listing" + deletedListing);
   })
 );
+
+// Review Creation Route
+app.post(
+  "/listings/:id/review",
+  wrapAsync(async (req, res) => {
+    const listing = await Listing.findById({ _id: req.params.id });
+    const newReview = new Review(req.body.review);
+    console.log(listing);
+    listing.reviews.push(newReview._id);
+
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${req.params.id}`);
+  })
+);
+
+// Review Deletion Route
+app.delete("/listings/:id/review/:reviewId", wrapAsync(async(req,res)=>{
+  let {id, reviewId}= req.params;
+  // console.log("Hello")
+  await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}})
+  await Review.findByIdAndDelete(reviewId)
+  res.redirect(`/listings/${req.params.id}`)
+}));
+
+
+
 
 // 404 Page Not Found
 app.use("/", (req, res, next) => {
