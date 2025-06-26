@@ -28,7 +28,15 @@
         <a href="/listings/new" class="nav-link ms-3">Add New Listing</a>
         <a target="_blank" href="https://sanket-singh-sameer.github.io/" class="nav-link ms-3">More From Sam</a>
       </div>
-
+      <div class="navbar-nav ms-auto">
+        <% if(!isUser){ %>
+          <a href="/signup" class="nav-link me-3">SignUp</a>
+          <a href="/login" class="nav-link me-3">LogIn</a>
+          <% } %>
+            <% if(isUser){ %>
+              <a href="/logout" class="nav-link me-3">LogOut</a>
+              <% } %>
+      </div>
     </div>
   </div>
 </nav>
