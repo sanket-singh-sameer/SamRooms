@@ -7,15 +7,37 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
-const listings=require("./routes/listings")
-const reviews=require("./routes/reviews")
+const listings = require("./routes/listings");
+const reviews = require("./routes/reviews");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("connect-flash")
 
+
+const sessionOptions = {
+  secret: "secrethaibabu",
+  resave: false,
+  saveUninitialized: true,
+  cookie:{
+    expires: Date.now()+1000*60*60*24*3,
+    maxAge: 1000*60*60*24*3,
+    httpOnly: true
+  }
+};
+
+
+app.use(cookieParser("1234abcd"));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(session(sessionOptions))
+app.use(flash())
+
+
+
 
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -33,15 +55,14 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success")
+  res.locals.failure=req.flash("failure")
+  next();
+})
 
-app.use("/listings", listings)
-app.use("/listings/:id/review", reviews)
-
-
-
-
-
-
+app.use("/listings", listings);
+app.use("/listings/:id/review", reviews);
 
 // 404 Page Not Found
 app.use("/", (req, res, next) => {
