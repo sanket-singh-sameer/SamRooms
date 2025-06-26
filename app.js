@@ -7,11 +7,15 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
-const listings = require("./routes/listings");
-const reviews = require("./routes/reviews");
+const listingsRouter = require("./routes/listings");
+const reviewsRouter = require("./routes/reviews");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash")
+const passport= require("passport")
+const LocalStrategy=require("passport-local")
+const User=require("./models/users.js")
+const usersRouter = require("./routes/users");
 
 
 const sessionOptions = {
@@ -35,6 +39,11 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(session(sessionOptions))
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 
@@ -60,9 +69,19 @@ app.use((req,res,next)=>{
   res.locals.failure=req.flash("failure")
   next();
 })
+// app.get("/demouser", async (req,res)=>{
+//   let fakeUser=new User({
+//     email: "demo@gmail.com",
+//     username: "demo-user",
+//   })
 
-app.use("/listings", listings);
-app.use("/listings/:id/review", reviews);
+//   let registeredUser = await User.register(fakeUser,"PassDemo")
+//   res.send(registeredUser)
+// })
+
+app.use("/listings", listingsRouter);
+app.use("/listings/:id/review", reviewsRouter);
+app.use("/", usersRouter);
 
 // 404 Page Not Found
 app.use("/", (req, res, next) => {
