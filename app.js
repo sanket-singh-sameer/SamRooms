@@ -65,8 +65,9 @@ app.get("/", (req, res) => {
 });
 
 app.use((req,res,next)=>{
-  res.locals.success=req.flash("success")
-  res.locals.failure=req.flash("failure")
+  res.locals.success=req.flash("success");
+  res.locals.failure=req.flash("failure");
+  res.locals.isUser=req.user;
   next();
 })
 // app.get("/demouser", async (req,res)=>{

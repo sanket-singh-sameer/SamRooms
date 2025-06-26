@@ -51,4 +51,15 @@ router.post("/login", function (req, res, next) {
   })(req, res, next);
 });
 
+
+router.get("/logout",(req,res)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }
+        req.flash("success","You are now logged out from SamRooms");
+        res.redirect("/listings")
+    })
+})
+
 module.exports = router;

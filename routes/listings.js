@@ -3,6 +3,7 @@ const router = express.Router();
 const Listing = require("../models/listings.js");
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const {isLoggedIn}=require("../validations/authentication.js")
 
 // Index Route
 router.get(
@@ -14,7 +15,7 @@ router.get(
 );
 
 //New Form Route
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn,(req, res) => {
   // render new listing form
   res.render("./listings/new.ejs");
 });
@@ -41,7 +42,7 @@ router.get(
 
 //Create Route
 router.post(
-  "/",
+  "/", isLoggedIn,
   wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     if (newListing.image === "") {
@@ -56,7 +57,7 @@ router.post(
 
 // Edit Route
 router.get(
-  "/:id/edit",
+  "/:id/edit", isLoggedIn,
   wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
@@ -72,7 +73,7 @@ router.get(
 );
 
 // Update Route
-router.put("/:id", async (req, res) => {
+router.put("/:id", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndUpdate(id, req.body.listing);
   req.flash("success", "Listing Edited Successfully");
@@ -81,7 +82,7 @@ router.put("/:id", async (req, res) => {
 
 // Delete Route
 router.delete(
-  "/:id",
+  "/:id", isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
