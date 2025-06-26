@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Reviews=require("./reviews.js")
+const Reviews = require("./reviews.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
 
@@ -36,7 +36,8 @@ const listingSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg"
+    default:
+      "https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg",
   },
   price: {
     type: Number,
@@ -47,22 +48,23 @@ const listingSchema = new mongoose.Schema({
   country: {
     type: String,
   },
-  reviews: [{
-  type: mongoose.Schema.Types.ObjectId,
-  ref: "Review"
-}]
-
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
-
-
-listingSchema.post("findOneAndDelete", async(listing)=>{
-  if(listing){
-    await Reviews.deleteMany({_id: {$in: listing.reviews}})
+listingSchema.post("findOneAndDelete", async (listing) => {
+  if (listing) {
+    await Reviews.deleteMany({ _id: { $in: listing.reviews } });
   }
-})
-
-
+});
 
 // Create model
 const Listing = mongoose.model(modelName, listingSchema);

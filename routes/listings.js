@@ -3,7 +3,7 @@ const router = express.Router();
 const Listing = require("../models/listings.js");
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const {isLoggedIn}=require("../validations/authentication.js")
+const { isLoggedIn } = require("../validations/middleware.js");
 
 // Index Route
 router.get(
@@ -15,7 +15,7 @@ router.get(
 );
 
 //New Form Route
-router.get("/new", isLoggedIn,(req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   // render new listing form
   res.render("./listings/new.ejs");
 });
@@ -25,9 +25,9 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
-    const reviewsList = await Listing.findById(req.params.id).populate(
-      "reviews"
-    );
+    const reviewsList = await Listing.findById(req.params.id)
+      .populate("reviews")
+      .populate("owner");
     if (!listing) {
       req.flash(
         "failure",
@@ -35,19 +35,22 @@ router.get(
       );
       res.redirect("/listings");
     } else {
-      res.render("./listings/show.ejs", { listing, reviewsList });
+      res.render("./listings/show.ejs", { listing, reviewsList })
+      console.log(reviewsList);
     }
   })
 );
 
 //Create Route
 router.post(
-  "/", isLoggedIn,
+  "/",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     if (newListing.image === "") {
       newListing.image = undefined; // triggers default
     }
+    newListing.owner= req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Created Successfully");
     // console.log(listing)
@@ -57,7 +60,8 @@ router.post(
 
 // Edit Route
 router.get(
-  "/:id/edit", isLoggedIn,
+  "/:id/edit",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
@@ -82,7 +86,8 @@ router.put("/:id", isLoggedIn, async (req, res) => {
 
 // Delete Route
 router.delete(
-  "/:id", isLoggedIn,
+  "/:id",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
