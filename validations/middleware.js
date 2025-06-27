@@ -1,4 +1,5 @@
 Listing=require("../models/listings")
+Review=require("../models/reviews")
 
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -25,7 +26,19 @@ module.exports.isOwner= async(req,res,next)=>{
     const { id } = req.params;
     let listing= await Listing.findById(id)
     if(!listing.owner.equals(res.locals.isUser._id)) {
-      req.flash("failure", "You don't have permission to edit this listing!");
+      req.flash("failure", "You don't have permission to do that!");
+      return res.redirect(`/listings/${id}`);
+    }
+    next()
+}
+
+
+module.exports.isReviewAuthor= async(req,res,next)=>{
+    const { reviewId } = req.params;
+    let review= await Review.findById(reviewId)
+
+    if(!review.author.equals(res.locals.isUser._id)) {
+      req.flash("failure", "You don't have permission to do that!");
       return res.redirect(`/listings/${id}`);
     }
     next()
