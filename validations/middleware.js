@@ -1,3 +1,6 @@
+Listing=require("../models/listings")
+
+
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl; // fixed typo here
@@ -16,3 +19,14 @@ module.exports.saveRedirectUrl = (req, res, next) => {
   }
   next();
 };
+
+
+module.exports.isOwner= async(req,res,next)=>{
+    const { id } = req.params;
+    let listing= await Listing.findById(id)
+    if(!listing.owner.equals(res.locals.isUser._id)) {
+      req.flash("failure", "You don't have permission to edit this listing!");
+      return res.redirect(`/listings/${id}`);
+    }
+    next()
+}

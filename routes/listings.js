@@ -3,7 +3,7 @@ const router = express.Router();
 const Listing = require("../models/listings.js");
 const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const { isLoggedIn } = require("../validations/middleware.js");
+const { isLoggedIn, isOwner } = require("../validations/middleware.js");
 
 // Index Route
 router.get(
@@ -35,7 +35,7 @@ router.get(
       );
       res.redirect("/listings");
     } else {
-      res.render("./listings/show.ejs", { listing, reviewsList })
+      res.render("./listings/show.ejs", { listing, reviewsList });
       console.log(reviewsList);
     }
   })
@@ -50,7 +50,7 @@ router.post(
     if (newListing.image === "") {
       newListing.image = undefined; // triggers default
     }
-    newListing.owner= req.user._id;
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Created Successfully");
     // console.log(listing)
@@ -62,6 +62,7 @@ router.post(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id);
     if (!listing) {
@@ -77,7 +78,7 @@ router.get(
 );
 
 // Update Route
-router.put("/:id", isLoggedIn, async (req, res) => {
+router.put("/:id", isLoggedIn, isOwner, async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndUpdate(id, req.body.listing);
   req.flash("success", "Listing Edited Successfully");
@@ -88,6 +89,7 @@ router.put("/:id", isLoggedIn, async (req, res) => {
 router.delete(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);

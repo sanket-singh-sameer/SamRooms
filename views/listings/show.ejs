@@ -21,6 +21,8 @@
                             Price: &#x20b9; <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <br>
                                 <%= listing.location %>, <%= listing.country %> <br>
                     </p>
+
+                    <% if(isUser && isUser.id==reviewsList.owner.id){ %>
                     <div class="row d-flex">
                         <form action="/listings/<%= listing._id %>/edit" class="col-4 offset-2">
                             <button class="btn btn-danger"> Edit! </button>
@@ -29,6 +31,8 @@
                             <button class="btn btn-dark"> Delete! </button>
                         </form>
                     </div>
+                    <% } %>
+                    
                 </div>
             </div>
 
