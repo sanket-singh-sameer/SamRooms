@@ -4,3 +4,4 @@ classroom/
 .env
 .env.*
 firebaseConfig.js
+test.js

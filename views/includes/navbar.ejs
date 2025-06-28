@@ -1,3 +1,26 @@
+<style>
+  .btn-search{
+    background-color: red;
+    color: white;
+    border-radius: 2rem;
+    width: 10rem;
+  }
+  .btn-search:hover{
+    background-color: red;
+    color: white;
+    border-radius: 2rem;
+    width: 10rem;
+  }
+  .btn-search i {
+    display: inline;
+  }
+  .bar-search{
+    border-radius: 2rem !important;
+  }
+</style>
+
+
+
 <nav class="navbar navbar-expand-lg  border-bottom sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand text-danger fw-bold" href="/"><i class="fa-solid fa-shop"></i> SAM Rooms</a>
@@ -25,8 +48,14 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a href="/listings" class="nav-link ms-3">All Listings</a>
-        <a href="/listings/new" class="nav-link ms-3">Add New Listing</a>
+        <a href="/listings/new" class="nav-link ms-3">Add New Place</a>
         <a target="_blank" href="https://sanket-singh-sameer.github.io/" class="nav-link ms-3">More From Sam</a>
+      </div>
+      <div class="navbar-nav d-flex align-items-center ms-auto">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2 bar-search" type="search" placeholder="Search destinations" aria-label="Search">
+          <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Search</button>
+        </form>
       </div>
       <div class="navbar-nav ms-auto">
         <% if(!isUser){ %>

@@ -1,4 +1,5 @@
-Listing = require("../models/listings");
+const Listing = require("../models/listings");
+const cloudinary = require("../cloudinary");
 
 module.exports.indexRoute = async (req, res) => {
   const allListings = await Listing.find({});
@@ -27,21 +28,32 @@ module.exports.showRoute = async (req, res) => {
   }
 };
 
-module.exports.createRoute = async (req, res) => {
-  const newListing = new Listing(req.body.listing);
+module.exports.createRoute = async (req, res, next) => {
+  try {
+    const newListing = new Listing(req.body.listing);
 
-  if (req.file) {
-    const url = req.file.path;
-    const filename = req.file.filename;
-    newListing.image = { url, filename };
-  } else {
-    newListing.image = undefined; // or set a default image if you want
+    if (req.file) {
+      // Upload to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "cloud-airbnb-dev",
+      });
+      newListing.image = {
+        url: result.secure_url,
+        filename: result.public_id,
+      };
+    } else {
+      newListing.image = undefined; // or set a default image if you want
+    }
+
+    newListing.owner = req.user._id;
+    await newListing.save();
+    req.flash("success", "New Listing Created Successfully");
+    res.redirect("/listings");
+  } catch (err) {
+    console.log(err);
+    req.flash("failure", "Image upload failed!");
+    res.redirect("/listings/new");
   }
-
-  newListing.owner = req.user._id;
-  await newListing.save();
-  req.flash("success", "New Listing Created Successfully");
-  res.redirect("/listings");
 };
 
 module.exports.editRoute = async (req, res) => {
@@ -59,7 +71,33 @@ module.exports.editRoute = async (req, res) => {
 
 module.exports.updateRoute = async (req, res) => {
   const { id } = req.params;
-  await Listing.findByIdAndUpdate(id, req.body.listing);
+  const updateData = req.body.listing || {};
+
+  // If a new image is uploaded, upload to Cloudinary
+  if (req.file) {
+    try {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "cloud-airbnb-dev",
+      });
+      updateData.image = {
+        url: result.secure_url,
+        filename: result.public_id,
+      };
+    } catch (err) {
+      console.log(err);
+      req.flash("failure", "Image upload failed!");
+      return res.redirect(`/listings/${id}/edit`);
+    }
+  }
+
+  // Find and update the listing, return the new document
+  const listing = await Listing.findByIdAndUpdate(id, updateData, { new: true });
+
+  if (!listing) {
+    req.flash("failure", "Listing not found.");
+    return res.redirect("/listings");
+  }
+
   req.flash("success", "Listing Edited Successfully");
   res.redirect(`/listings/${id}`);
 };

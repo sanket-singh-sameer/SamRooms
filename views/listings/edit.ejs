@@ -6,7 +6,7 @@
         <div class="col-10 offset-1">
             <h3>Edit your old listing: </h3>
             <br>
-            <form method="post" action="/listings/<%= listing.id %>?_method=PUT" novalidate class="needs-validation">
+            <form method="post" action="/listings/<%= listing.id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" form="label">Title</label>
                     <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control">
@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" form="label">Image Link / URL</label>
-                    <input type="text" name="listing[image]" value="<%= listing.image %>" class="form-control" required>
+                    <label for="image" form="label">Upload New Image</label>
+                    <input type="file" name="listing[image]" class="form-control">
                     <div class="valid-feedback">
                         Looks good!
                     </div>

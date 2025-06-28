@@ -5,16 +5,15 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const { isLoggedIn, isOwner } = require("../validations/middleware.js");
 const listingController = require("../controllers/listings.js");
-const multer = require("multer");
-const { cloudinary, storage } = require("../cloudConfig.js");
-const parser = multer({ storage: storage });
+const upload = require("../multer")
+const cloudinary = require("../cloudinary")
 
 router
   .route("/")
   .get(wrapAsync(listingController.indexRoute)) //Index Route
   .post(
     isLoggedIn,
-    parser.single("listing[image]"),
+    upload.single("listing[image]"),
     wrapAsync(listingController.createRoute)
   ); //Create Route
 
@@ -25,7 +24,12 @@ router.route("/new").get(isLoggedIn, listingController.newListingForm);
 router
   .route("/:id")
   .get(wrapAsync(listingController.showRoute))
-  .put(isLoggedIn, isOwner, listingController.updateRoute)
+  .put(
+    isLoggedIn,
+    isOwner,
+    upload.single("listing[image]"),
+    listingController.updateRoute
+  )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.deleteRoute)); // Delete Route
 
 // Edit Route
