@@ -35,9 +35,15 @@ const listingSchema = new mongoose.Schema({
     type: String,
   },
   image: {
-    type: String,
-    default:
-      "https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg",
+    url: {
+      type: String,
+      default:
+        "https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg",
+    },
+    filename: {
+      type: String,
+      default: "defaultImage"
+    },
   },
   price: {
     type: Number,

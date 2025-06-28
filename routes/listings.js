@@ -5,11 +5,18 @@ const ExpressError = require("../utils/ExpressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const { isLoggedIn, isOwner } = require("../validations/middleware.js");
 const listingController = require("../controllers/listings.js");
+const multer = require("multer");
+const { cloudinary, storage } = require("../cloudConfig.js");
+const parser = multer({ storage: storage });
 
 router
   .route("/")
   .get(wrapAsync(listingController.indexRoute)) //Index Route
-  .post(isLoggedIn, wrapAsync(listingController.createRoute)); //Create Route
+  .post(
+    isLoggedIn,
+    parser.single("listing[image]"),
+    wrapAsync(listingController.createRoute)
+  ); //Create Route
 
 // New Form Route (must come before /:id)
 router.route("/new").get(isLoggedIn, listingController.newListingForm);

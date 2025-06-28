@@ -29,13 +29,18 @@ module.exports.showRoute = async (req, res) => {
 
 module.exports.createRoute = async (req, res) => {
   const newListing = new Listing(req.body.listing);
-  if (newListing.image === "") {
-    newListing.image = undefined; // triggers default
+
+  if (req.file) {
+    const url = req.file.path;
+    const filename = req.file.filename;
+    newListing.image = { url, filename };
+  } else {
+    newListing.image = undefined; // or set a default image if you want
   }
+
   newListing.owner = req.user._id;
   await newListing.save();
   req.flash("success", "New Listing Created Successfully");
-  // console.log(listing)
   res.redirect("/listings");
 };
 

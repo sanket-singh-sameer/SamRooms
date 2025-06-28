@@ -6,7 +6,7 @@
         <div class="col-10 offset-1">
             <h3>Add a new listing: </h3>
             <br>
-            <form method="post" action="/listings" novalidate class="needs-validation">
+            <form method="post" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" form="label">Title</label>
                     <input type="text" name="listing[title]" placeholder="Name of the residency" class="form-control"
@@ -34,9 +34,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" form="label">Image Link / URL</label>
-                    <input type="text" name="listing[image]" placeholder="Link of Image" class="form-control"
-                        value="https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg">
+                    <label for="image" form="label">Upload Image</label>
+                    <input type="file" name="listing[image]" class="form-control" required>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -44,6 +43,17 @@
                         Please provide a valid image URL.
                     </div> <br>
                 </div>
+                <!-- <div class="mb-3">
+                    <label for="image" form="label">Image Link / URL</label>
+                    <input type="link" name="listing[image]" placeholder="Link of Image" class="form-control"
+                        value="https://cdn.pixabay.com/photo/2018/05/31/15/06/see-no-evil-3444212_1280.jpg">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback"> 
+                        Please provide a valid image URL.
+                    </div> <br>
+                </div> -->
 
                 <div class="row">
                     <div class="mb-3 col-sm-4">
