@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const port = 8080;
 const mongoose = require("mongoose");
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+const MONGO_URL = process.env.MONGO_ATLAS;
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -14,6 +14,7 @@ const listingsRouter = require("./routes/listings");
 const reviewsRouter = require("./routes/reviews");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")
 const flash = require("connect-flash")
 const passport= require("passport")
 const LocalStrategy=require("passport-local")
@@ -21,8 +22,19 @@ const User=require("./models/users.js")
 const usersRouter = require("./routes/users");
 
 
+const store = MongoStore.create({
+  mongoUrl: MONGO_URL,
+  crypto:{
+    secret: process.env.SESSION_SECRET,
+  },
+  touchAfter: 7*24*3600,
+})
+store.on("error",()=>{
+  console.log("ERROR IN MONGO SESSION STORE")
+})
 const sessionOptions = {
-  secret: "secrethaibabu",
+  store,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie:{
@@ -31,6 +43,7 @@ const sessionOptions = {
     httpOnly: true
   }
 };
+
 
 
 app.use(cookieParser("1234abcd"));

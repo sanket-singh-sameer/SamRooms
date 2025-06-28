@@ -1,8 +1,9 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 
 const Reviews = require("./reviews.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+const MONGO_URL = process.env.MONGO_ATLAS;
 
 async function main() {
   await mongoose.connect(MONGO_URL);
