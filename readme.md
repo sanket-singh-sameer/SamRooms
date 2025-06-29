@@ -3,7 +3,7 @@
 Welcome to **SamRooms**, a full-stack AirBNB-inspired web application for listing, signup,reviews, searching(will be available soon), and booking(will be available soon) unique places to stay!  
 Built with Node.js, Express, MongoDB, EJS, and Cloudinary.
 
-![SamRooms Banner](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80)
+![SamRooms Banner](https://github.com/sanket-singh-sameer/SamRooms/blob/5bc6af29176648d0b1488954f7de6130c21a4963/assets/readme/banner.png?raw=true)
 
 ---
 
@@ -34,8 +34,11 @@ Built with Node.js, Express, MongoDB, EJS, and Cloudinary.
 
 ## 📸 Screenshots
 
-![SamRooms Banner](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80)
-![SamRooms Banner](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80)
+![SamRooms Banner](https://github.com/sanket-singh-sameer/SamRooms/blob/5bc6af29176648d0b1488954f7de6130c21a4963/assets/readme/listingPage.png?raw=true)
+
+![SamRooms Banner](https://github.com/sanket-singh-sameer/SamRooms/blob/5bc6af29176648d0b1488954f7de6130c21a4963/assets/readme/showPage.png?raw=true)
+
+![SamRooms Banner](https://github.com/sanket-singh-sameer/SamRooms/blob/5bc6af29176648d0b1488954f7de6130c21a4963/assets/readme/newPage.png?raw=true)
 
 ---
 
